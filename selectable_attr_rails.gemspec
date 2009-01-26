@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency("selectable_attr", SelectableAttrRails::VERSION)
 
   spec.files         = FileList['Rakefile', 'bin/*', '*.rb', '{lib,test}/**/*.{rb}', 'tasks/**/*.{rake}'].to_a
-  spec.require_path  = "lib"
-  spec.requirements  = ["none"]
+  # spec.require_path  = "lib"
+  # spec.requirements  = ["none"]
   # spec.autorequire = 'selectable_attr_rails' # autorequire is deprecated
 end
