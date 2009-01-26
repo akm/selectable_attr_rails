@@ -1,5 +1,4 @@
 $KCODE='u'
-require 'test/unit'
 
 FIXTURES_ROOT = File.join(File.dirname(__FILE__), 'fixtures') unless defined?(FIXTURES_ROOT)
 
@@ -21,12 +20,9 @@ ActiveRecord::Base.establish_connection(config[ENV['DB'] || 'sqlite3'])
 load(File.join(File.dirname(__FILE__), 'schema.rb'))
 
 
-class Test::Unit::TestCase
-  
-  def assert_hash(expected, actual)
-    keys = (expected.keys + actual.keys).uniq
-    keys.each do |key|
-      assert_equal expected[key], actual[key], "unmatch value for #{key.inspect}"
-    end
+def assert_hash(expected, actual)
+  keys = (expected.keys + actual.keys).uniq
+  keys.each do |key|
+    assert_equal expected[key], actual[key], "unmatch value for #{key.inspect}"
   end
 end

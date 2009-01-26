@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-require File.join(File.dirname(__FILE__), 'test_helper')
+require File.join(File.dirname(__FILE__), 'spec_helper')
 
-class IntroductionTest < Test::Unit::TestCase
+describe SelectableAttr do
 
   def assert_product_discount(klass)
     # productsテーブルのデータから安売り用の価格は
     # product_type_cd毎に決められた割合をpriceにかけて求めます。
     p1 = klass.new(:name => '実践Rails', :product_type_cd => '01', :price => 3000)
-    assert_equal 2400, p1.discount_price
+    p1.discount_price.should == 2400
     p2 = klass.new(:name => '薔薇の名前', :product_type_cd => '02', :price => 1500)
-    assert_equal 300, p2.discount_price
+    p2.discount_price.should == 300
     p3 = klass.new(:name => '未来派野郎', :product_type_cd => '03', :price => 3000)
-    assert_equal 1500, p3.discount_price
+    p3.discount_price.should == 1500
   end
   
   # 定数をガンガン定義した場合
@@ -43,12 +43,12 @@ class IntroductionTest < Test::Unit::TestCase
     end
   end
   
-  def test_legacy_product
+  it "test_legacy_product" do
     assert_product_discount(LegacyProduct1)
     
     # 選択肢を表示するためのデータは以下のように取得できる
-    assert_equal([['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']], 
-      LegacyProduct1::PRODUCT_TYPE_OPTIONS)
+    LegacyProduct1::PRODUCT_TYPE_OPTIONS.should ==
+      [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
   end
   
   
@@ -75,12 +75,12 @@ class IntroductionTest < Test::Unit::TestCase
     end
   end
   
-  def test_legacy_product
+  it "test_legacy_product" do
     assert_product_discount(LegacyProduct2)
     
     # 選択肢を表示するためのデータは以下のように取得できる
-    assert_equal([['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']], 
-      LegacyProduct2::PRODUCT_TYPE_OPTIONS)
+    LegacyProduct2::PRODUCT_TYPE_OPTIONS.should == 
+      [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
   end
   
   # selectable_attrを使った場合
@@ -100,11 +100,11 @@ class IntroductionTest < Test::Unit::TestCase
     end
   end
   
-  def test_product1
+  it "test_product1" do
     assert_product_discount(Product1)
     # 選択肢を表示するためのデータは以下のように取得できる
-    assert_equal([['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']], 
-      Product1.product_type_options)
+    Product1.product_type_options.should ==
+      [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
   end
   
   
@@ -130,50 +130,50 @@ class IntroductionTest < Test::Unit::TestCase
   end
   
   # selectable_attrが定義するクラスメソッドの詳細
-  def test_product_type_class_methods
+  it "test_product_type_class_methods" do
     # キーからid、名称を取得できます
-    assert_equal '01', Product1.product_type_id_by_key(:book)
-    assert_equal '02', Product1.product_type_id_by_key(:dvd)
-    assert_equal '03', Product1.product_type_id_by_key(:cd)
-    assert_equal '09', Product1.product_type_id_by_key(:other)
-    assert_equal '書籍', Product1.product_type_name_by_key(:book)
-    assert_equal 'DVD', Product1.product_type_name_by_key(:dvd)
-    assert_equal 'CD', Product1.product_type_name_by_key(:cd)
-    assert_equal 'その他', Product1.product_type_name_by_key(:other)
+    Product1.product_type_id_by_key(:book).should == '01'
+    Product1.product_type_id_by_key(:dvd).should == '02'
+    Product1.product_type_id_by_key(:cd).should == '03'
+    Product1.product_type_id_by_key(:other).should == '09'
+    Product1.product_type_name_by_key(:book).should == '書籍'
+    Product1.product_type_name_by_key(:dvd).should == 'DVD'   
+    Product1.product_type_name_by_key(:cd).should == 'CD'    
+    Product1.product_type_name_by_key(:other).should == 'その他'
     # 存在しないキーの場合はnilを返します
-    assert_equal nil, Product1.product_type_id_by_key(nil)
-    assert_equal nil, Product1.product_type_name_by_key(nil)
-    assert_equal nil, Product1.product_type_id_by_key(:unexist)
-    assert_equal nil, Product1.product_type_name_by_key(:unexist)
+    Product1.product_type_id_by_key(nil).should be_nil
+    Product1.product_type_name_by_key(nil).should be_nil
+    Product1.product_type_id_by_key(:unexist).should be_nil
+    Product1.product_type_name_by_key(:unexist).should be_nil
 
     # idからキー、名称を取得できます
-    assert_equal :book, Product1.product_type_key_by_id('01')
-    assert_equal :dvd, Product1.product_type_key_by_id('02')
-    assert_equal :cd, Product1.product_type_key_by_id('03')
-    assert_equal :other, Product1.product_type_key_by_id('09')
-    assert_equal '書籍', Product1.product_type_name_by_id('01')
-    assert_equal 'DVD', Product1.product_type_name_by_id('02')
-    assert_equal 'CD', Product1.product_type_name_by_id('03')
-    assert_equal 'その他', Product1.product_type_name_by_id('09')
+    Product1.product_type_key_by_id('01').should == :book
+    Product1.product_type_key_by_id('02').should == :dvd
+    Product1.product_type_key_by_id('03').should == :cd
+    Product1.product_type_key_by_id('09').should == :other
+    Product1.product_type_name_by_id('01').should == '書籍'
+    Product1.product_type_name_by_id('02').should == 'DVD'
+    Product1.product_type_name_by_id('03').should == 'CD'
+    Product1.product_type_name_by_id('09').should == 'その他'
     # 存在しないidの場合はnilを返します
-    assert_equal nil, Product1.product_type_key_by_id(nil)
-    assert_equal nil, Product1.product_type_name_by_id(nil)
-    assert_equal nil, Product1.product_type_key_by_id('99')
-    assert_equal nil, Product1.product_type_name_by_id('99')
+    Product1.product_type_key_by_id(nil).should be_nil
+    Product1.product_type_name_by_id(nil).should be_nil
+    Product1.product_type_key_by_id('99').should be_nil
+    Product1.product_type_name_by_id('99').should be_nil
     
     # id、キー、名称の配列を取得できます
-    assert_equal ['01', '02', '03', '09'], Product1.product_type_ids
-    assert_equal [:book, :dvd, :cd, :other], Product1.product_type_keys
-    assert_equal ['書籍', 'DVD', 'CD', 'その他'], Product1.product_type_names
+    Product1.product_type_ids.should == ['01', '02', '03', '09']
+    Product1.product_type_keys.should == [:book, :dvd, :cd, :other]
+    Product1.product_type_names.should == ['書籍', 'DVD', 'CD', 'その他']
     # 一部のものだけ取得することも可能です。
-    assert_equal ['03', '02'], Product1.product_type_ids(:cd, :dvd)
-    assert_equal [:dvd, :cd], Product1.product_type_keys('02', '03')
-    assert_equal ['DVD', 'CD'], Product1.product_type_names('02', '03')
-    assert_equal ['CD', 'DVD'], Product1.product_type_names(:cd, :dvd)
+    Product1.product_type_ids(:cd, :dvd).should == ['03', '02' ]
+    Product1.product_type_keys('02', '03').should == [:dvd, :cd  ]
+    Product1.product_type_names('02', '03').should == ['DVD', 'CD'] 
+    Product1.product_type_names(:cd, :dvd).should == ['CD', 'DVD']
     
     # select_tagなどのoption_tagsを作るための配列なんか一発っす
-    assert_equal([['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']], 
-      Product1.product_type_options)
+    Product1.product_type_options.should == 
+      [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
   end
 
   # selectable_attrのエントリ名をDB上に保持するためのモデル
@@ -200,25 +200,26 @@ class IntroductionTest < Test::Unit::TestCase
     end
   end
   
-  def test_update_entry_name
+  it "test_update_entry_name" do
     # DBに全くデータがなくてもコードで記述してあるエントリは存在します。
     ItemMaster.delete_all("category_name = 'product_type_cd'")
-    assert_equal 4, ProductWithDB1.product_type_entries.length
-    assert_equal '書籍', ProductWithDB1.product_type_name_by_key(:book)
-    assert_equal 'DVD', ProductWithDB1.product_type_name_by_key(:dvd)
-    assert_equal 'CD', ProductWithDB1.product_type_name_by_key(:cd)
-    assert_equal 'その他', ProductWithDB1.product_type_name_by_key(:other)
+    ProductWithDB1.product_type_entries.length.should == 4
+    ProductWithDB1.product_type_name_by_key(:book).should == '書籍'
+    ProductWithDB1.product_type_name_by_key(:dvd).should == 'DVD'
+    ProductWithDB1.product_type_name_by_key(:cd).should == 'CD'
+    ProductWithDB1.product_type_name_by_key(:other).should == 'その他'
 
     assert_product_discount(ProductWithDB1)
     
     # DBからエントリの名称を動的に変更できます
     item_book = ItemMaster.create(:category_name => 'product_type_cd', :item_no => 1, :item_cd => '01', :name => '本')
-    assert_equal 4, ProductWithDB1.product_type_entries.length
-    assert_equal '本', ProductWithDB1.product_type_name_by_key(:book)
-    assert_equal 'DVD', ProductWithDB1.product_type_name_by_key(:dvd)
-    assert_equal 'CD', ProductWithDB1.product_type_name_by_key(:cd)
-    assert_equal 'その他', ProductWithDB1.product_type_name_by_key(:other)
-    assert_equal [['本', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']], ProductWithDB1.product_type_options
+    ProductWithDB1.product_type_entries.length.should == 4
+    ProductWithDB1.product_type_name_by_key(:book).should == '本'    
+    ProductWithDB1.product_type_name_by_key(:dvd).should == 'DVD'   
+    ProductWithDB1.product_type_name_by_key(:cd).should == 'CD'    
+    ProductWithDB1.product_type_name_by_key(:other).should == 'その他' 
+    ProductWithDB1.product_type_options.should == 
+      [['本', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
     
     # DBからエントリの並び順を動的に変更できます
     item_book.item_no = 4;
@@ -226,29 +227,36 @@ class IntroductionTest < Test::Unit::TestCase
     item_other = ItemMaster.create(:category_name => 'product_type_cd', :item_no => 1, :item_cd => '09', :name => 'その他')
     item_dvd = ItemMaster.create(:category_name => 'product_type_cd', :item_no => 2, :item_cd => '02') # nameは指定しなかったらデフォルトが使われます。
     item_cd = ItemMaster.create(:category_name => 'product_type_cd', :item_no => 3, :item_cd => '03') # nameは指定しなかったらデフォルトが使われます。
-    assert_equal [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01']], ProductWithDB1.product_type_options
+    ProductWithDB1.product_type_options.should ==
+      [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01']]
     
     # DBからエントリを動的に追加することも可能です。
     item_toys = ItemMaster.create(:category_name => 'product_type_cd', :item_no => 5, :item_cd => '04', :name => 'おもちゃ')
-    assert_equal [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04']], ProductWithDB1.product_type_options
-    assert_equal :entry_04, ProductWithDB1.product_type_key_by_id('04')
+    ProductWithDB1.product_type_options.should == 
+      [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04']]
+    ProductWithDB1.product_type_key_by_id('04').should == :entry_04
     
     # DBからレコードを削除してもコードで定義したentryは削除されません。
     # 順番はDBからの取得順で並び替えられたものの後になります
     item_dvd.destroy
-    assert_equal [['その他', '09'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04'], ['DVD', '02']], ProductWithDB1.product_type_options
+    ProductWithDB1.product_type_options.should == 
+      [['その他', '09'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04'], ['DVD', '02']]
     
     # DB上で追加したレコードを削除すると、エントリも削除されます
     item_toys.destroy
-    assert_equal [['その他', '09'], ['CD', '03'], ['本', '01'], ['DVD', '02']], ProductWithDB1.product_type_options
-
+    ProductWithDB1.product_type_options.should == 
+      [['その他', '09'], ['CD', '03'], ['本', '01'], ['DVD', '02']]
+    
     # 名称を指定していたDBのレコードを削除したら元に戻ります。
     item_book.destroy
-    assert_equal [['その他', '09'], ['CD', '03'], ['書籍', '01'], ['DVD', '02']], ProductWithDB1.product_type_options
+    ProductWithDB1.product_type_options.should == 
+      [['その他', '09'], ['CD', '03'], ['書籍', '01'], ['DVD', '02']]
     
     # エントリに該当するレコードを全部削除したら、元に戻ります。
     ItemMaster.delete_all("category_name = 'product_type_cd'")
-    assert_equal [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']], ProductWithDB1.product_type_options
+    ProductWithDB1.product_type_options.should == 
+      [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
+    
     assert_product_discount(ProductWithDB1)
   end
   
@@ -275,40 +283,40 @@ class IntroductionTest < Test::Unit::TestCase
     end
   end
   
-  def test_product2
+  it "test_product2" do
     assert_product_discount(Product2)
     # 選択肢を表示するためのデータは以下のように取得できる
-    assert_equal([['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']], 
-      Product2.type_options)
+    Product2.type_options.should ==
+      [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
 
     p2 = Product2.new
-    assert_equal nil, p2.product_type_cd
-    assert_equal nil, p2.type_key
-    assert_equal nil, p2.type_name
+    p2.product_type_cd.should be_nil
+    p2.type_key.should be_nil
+    p2.type_name.should be_nil
     # idを変更すると得られるキーも名称も変わります
     p2.product_type_cd = '02'
-    assert_equal '02', p2.product_type_cd
-    assert_equal :dvd, p2.type_key
-    assert_equal 'DVD', p2.type_name
+    p2.product_type_cd.should == '02'
+    p2.type_key.should == :dvd
+    p2.type_name.should == 'DVD'
     # キーを変更すると得られるidも名称も変わります
     p2.type_key = :book
-    assert_equal '01', p2.product_type_cd
-    assert_equal :book, p2.type_key
-    assert_equal '書籍', p2.type_name
+    p2.product_type_cd.should == '01'
+    p2.type_key.should == :book 
+    p2.type_name.should == '書籍'
     # id、キー、名称以外の任意の属性は、entryの[]メソッドで取得します。
     p2.type_key = :cd
-    assert_equal 0.5, p2.type_entry[:discount]
+    p2.type_entry[:discount].should == 0.5
     
-    assert_equal '01', Product2.type_id_by_key(:book)
-    assert_equal '02', Product2.type_id_by_key(:dvd)
-    assert_equal 'CD', Product2.type_name_by_key(:cd)
-    assert_equal 'その他', Product2.type_name_by_key(:other)
-    assert_equal :other, Product2.type_key_by_id('09')
-    assert_equal '書籍', Product2.type_name_by_id('01')
-    assert_equal [:book, :dvd, :cd, :other], Product2.type_keys
-    assert_equal ['書籍', 'DVD', 'CD', 'その他'], Product2.type_names
-    assert_equal [:dvd, :cd], Product2.type_keys('02', '03')
-    assert_equal ['CD', 'DVD'], Product2.type_names(:cd, :dvd)
+    Product2.type_id_by_key(:book).should == '01'
+    Product2.type_id_by_key(:dvd).should == '02'
+    Product2.type_name_by_key(:cd).should == 'CD'
+    Product2.type_name_by_key(:other).should == 'その他'
+    Product2.type_key_by_id('09').should == :other
+    Product2.type_name_by_id('01').should == '書籍'
+    Product2.type_keys.should == [:book, :dvd, :cd, :other]
+    Product2.type_names.should == ['書籍', 'DVD', 'CD', 'その他']
+    Product2.type_keys('02', '03').should == [:dvd, :cd]
+    Product2.type_names(:cd, :dvd).should == ['CD', 'DVD']
   end
   
   
@@ -331,16 +339,16 @@ class IntroductionTest < Test::Unit::TestCase
     end
   end
   
-  def test_product3
+  it "test_product3" do 
     assert_product_discount(Product3)
     # 選択肢を表示するためのデータは以下のように取得できる
-    assert_equal([['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']], 
-      Product3.type_options)
-
+    Product3.type_options.should ==
+      [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
+      
     p3 = Product3.new
-    assert_equal nil, p3.product_type_cd
-    assert_equal nil, p3.type_key
-    assert_equal nil, p3.type_name
+    p3.product_type_cd.should be_nil
+    p3.type_key.should be_nil
+    p3.type_name.should be_nil
     # idを変更すると得られるキーも名称も変わります
     p3.product_type_cd = '02'
     assert_equal '02', p3.product_type_cd
