@@ -109,24 +109,24 @@ describe SelectableAttr do
   
   
   # selectable_attrが定義するインスタンスメソッドの詳細
-  def test_product_type_instance_methods
+  it "test_product_type_instance_methods" do
     p1 = Product1.new
-    assert_equal nil, p1.product_type_cd
-    assert_equal nil, p1.product_type_key
-    assert_equal nil, p1.product_type_name
+    p1.product_type_cd.should be_nil
+    p1.product_type_key.should be_nil
+    p1.product_type_name.should be_nil
     # idを変更すると得られるキーも名称も変わります
     p1.product_type_cd = '02'
-    assert_equal '02', p1.product_type_cd
-    assert_equal :dvd, p1.product_type_key
-    assert_equal 'DVD', p1.product_type_name
+    p1.product_type_cd.should ==   '02' 
+    p1.product_type_key.should ==  :dvd 
+    p1.product_type_name.should == 'DVD'
     # キーを変更すると得られるidも名称も変わります
     p1.product_type_key = :book
-    assert_equal '01', p1.product_type_cd
-    assert_equal :book, p1.product_type_key
-    assert_equal '書籍', p1.product_type_name
+    p1.product_type_cd.should ==   '01'
+    p1.product_type_key.should ==  :book 
+    p1.product_type_name.should == '書籍'
     # id、キー、名称以外の任意の属性は、entryの[]メソッドで取得します。
     p1.product_type_key = :cd
-    assert_equal 0.5, p1.product_type_entry[:discount]
+    p1.product_type_entry[:discount].should == 0.5
   end
   
   # selectable_attrが定義するクラスメソッドの詳細
@@ -351,28 +351,28 @@ describe SelectableAttr do
     p3.type_name.should be_nil
     # idを変更すると得られるキーも名称も変わります
     p3.product_type_cd = '02'
-    assert_equal '02', p3.product_type_cd
-    assert_equal :dvd, p3.type_key
-    assert_equal 'DVD', p3.type_name
+    p3.product_type_cd.should == '02'
+    p3.type_key.should ==        :dvd
+    p3.type_name.should ==       'DVD'
     # キーを変更すると得られるidも名称も変わります
     p3.type_key = :book
-    assert_equal '01', p3.product_type_cd
-    assert_equal :book, p3.type_key
-    assert_equal '書籍', p3.type_name
+    p3.product_type_cd.should == '01'
+    p3.type_key.should ==        :book
+    p3.type_name.should ==       '書籍'
     # id、キー、名称以外の任意の属性は、entryの[]メソッドで取得します。
     p3.type_key = :cd
-    assert_equal 0.5, p3.type_entry[:discount]
+    p3.type_entry[:discount].should == 0.5
     
-    assert_equal '01', Product3.type_id_by_key(:book)
-    assert_equal '02', Product3.type_id_by_key(:dvd)
-    assert_equal 'CD', Product3.type_name_by_key(:cd)
-    assert_equal 'その他', Product3.type_name_by_key(:other)
-    assert_equal :other, Product3.type_key_by_id('09')
-    assert_equal '書籍', Product3.type_name_by_id('01')
-    assert_equal [:book, :dvd, :cd, :other], Product3.type_keys
-    assert_equal ['書籍', 'DVD', 'CD', 'その他'], Product3.type_names
-    assert_equal [:dvd, :cd], Product3.type_keys('02', '03')
-    assert_equal ['CD', 'DVD'], Product3.type_names(:cd, :dvd)
+    Product3.type_id_by_key(:book).should ==    '01'
+    Product3.type_id_by_key(:dvd).should ==     '02'    
+    Product3.type_name_by_key(:cd).should ==    'CD'    
+    Product3.type_name_by_key(:other).should == 'その他'
+    Product3.type_key_by_id('09').should ==     :other  
+    Product3.type_name_by_id('01').should ==    '書籍'  
+    Product3.type_keys.should == [:book, :dvd, :cd, :other]
+    Product3.type_names.should == ['書籍', 'DVD', 'CD', 'その他']
+    Product3.type_keys('02', '03').should == [:dvd, :cd]
+    Product3.type_names(:cd, :dvd).should == ['CD', 'DVD']
   end
   
 end

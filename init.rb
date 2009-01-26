@@ -1,8 +1,9 @@
 require 'selectable_attr'
+require 'selectable_attr_rails'
 
 module SelectableAttr
   class Enum
-    include SelectableAttr::DbLoadable
+    include ::SelectableAttrRails::DbLoadable
   end
 end
 
@@ -11,13 +12,13 @@ class ActiveRecord::Base
 end
 
 class ActionView::Base
-  include SelectableAttr::Helpers::SelectHelper::Base
-  include SelectableAttr::Helpers::CheckBoxGroupHelper::Base
-  include SelectableAttr::Helpers::RadioButtonGroupHelper::Base
+  include ::SelectableAttrRails::Helpers::SelectHelper::Base
+  include ::SelectableAttrRails::Helpers::CheckBoxGroupHelper::Base
+  include ::SelectableAttrRails::Helpers::RadioButtonGroupHelper::Base
 end
 
 class ActionView::Helpers::FormBuilder
-  include SelectableAttr::Helpers::SelectHelper::FormBuilder
-  include SelectableAttr::Helpers::CheckBoxGroupHelper::FormBuilder
-  include SelectableAttr::Helpers::RadioButtonGroupHelper::FormBuilder
+  include ::SelectableAttrRails::Helpers::SelectHelper::FormBuilder
+  include ::SelectableAttrRails::Helpers::CheckBoxGroupHelper::FormBuilder
+  include ::SelectableAttrRails::Helpers::RadioButtonGroupHelper::FormBuilder
 end

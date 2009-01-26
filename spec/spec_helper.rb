@@ -9,6 +9,8 @@ require 'active_record/fixtures'
 require 'active_record/test_case'
 require 'action_view'
 
+require 'selectable_attr'
+
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require File.join(File.dirname(__FILE__), '..', 'init')
 

@@ -37,3 +37,17 @@ namespace :coverage do
     t.index_html = 'coverage/index.html'
   end
 end
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |s|
+    s.name = "selectable_attr_rails"
+    s.summary  = "selectable_attr_rails makes possible to use selectable_attr in rails application"
+    s.description  = "selectable_attr_rails makes possible to use selectable_attr in rails application"
+    s.email    = "akima@gmail.com"
+    s.homepage = "http://github.com/akm/selectable_attr_rails/"
+    s.authors  = ["Takeshi Akima"]
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+end

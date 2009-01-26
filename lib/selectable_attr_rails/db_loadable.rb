@@ -30,7 +30,7 @@ module SelectableAttrRails
         unless @original_entries
           @original_entries = @entries.dup
           @original_entries.each do |entry|
-            entry.extend(SelectableAttr::DbLoadable::Entry)
+            entry.extend(SelectableAttrRails::DbLoadable::Entry)
           end
         end
         records = nil
