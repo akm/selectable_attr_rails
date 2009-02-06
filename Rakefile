@@ -47,6 +47,9 @@ begin
     s.email    = "akima@gmail.com"
     s.homepage = "http://github.com/akm/selectable_attr_rails/"
     s.authors  = ["Takeshi Akima"]
+    s.add_dependency("activesupport", ">= 2.0.2")
+    s.add_dependency("activerecord", ">= 2.0.2")
+    s.add_dependency("actionpack", ">= 2.0.2")
     s.add_dependency("akm-selectable_attr", ">= 0.3.1")
   end
 rescue LoadError
