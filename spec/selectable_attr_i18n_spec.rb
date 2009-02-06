@@ -6,25 +6,15 @@ if defined?(I18n)
 
     before(:each) do
       I18n.backend = I18n::Backend::Simple.new
-#       I18n.backend.store_translations 'en', 'selectable_attrs' => {'enum1' => {
-#           'entry1' => 'entry one',
-#           'entry2' => 'entry two',
-#           'entry3' => 'entry three'
-#         } }
-#       I18n.backend.store_translations 'ja', 'selectable_attrs' => {'enum1' => {
-#           'entry1' => 'エントリ壱',
-#           'entry2' => 'エントリ弐',
-#           'entry3' => 'エントリ参'
-#         } }
-      I18n.backend.store_translations 'en', :selectable_attrs => {:enum1 => {
-          :entry1 => 'entry one',
-          :entry2 => 'entry two',
-          :entry3 => 'entry three'
+      I18n.backend.store_translations 'en', 'selectable_attrs' => {'enum1' => {
+          'entry1' => 'entry one',
+          'entry2' => 'entry two',
+          'entry3' => 'entry three'
         } }
-      I18n.backend.store_translations 'ja', :selectable_attrs => {:enum1 => {
-          :entry1 => 'エントリ壱',
-          :entry2 => 'エントリ弐',
-          :entry3 => 'エントリ参'
+      I18n.backend.store_translations 'ja', 'selectable_attrs' => {'enum1' => {
+          'entry1' => 'エントリ壱',
+          'entry2' => 'エントリ弐',
+          'entry3' => 'エントリ参'
         } }
     end
 
@@ -228,16 +218,16 @@ if defined?(I18n)
 
       I18n.locale = 'ja'
       actual = SelectableAttr::Enum.i18n_export
-      actual.keys.should == [:selectable_attrs]
-      actual[:selectable_attrs].keys.include?(:enum1).should == true
-      actual[:selectable_attrs][:enum1].should ==
-        {:entry1=>"エントリ壱",
-         :entry2=>"エントリ弐",
-         :entry3=>"エントリ参"}
+      actual.keys.should == ['selectable_attrs']
+      actual['selectable_attrs'].keys.include?('enum1').should == true
+      actual['selectable_attrs']['enum1'].should ==
+        {'entry1'=>"エントリ壱",
+         'entry2'=>"エントリ弐",
+         'entry3'=>"エントリ参"}
 
-      actual[:selectable_attrs][:ProductWithI18nDB1].should ==
-        {:product_type_cd=>
-          {:book=>"書籍", :dvd=>"DVD", :cd=>"CD", :other=>"その他"}}
+      actual['selectable_attrs']['ProductWithI18nDB1'].should ==
+        {'product_type_cd'=>
+          {'book'=>"書籍", 'dvd'=>"DVD", 'cd'=>"CD", 'other'=>"その他"}}
 
       I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 1, :item_cd => '09', :name => 'Others')
       I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 2, :item_cd => '02', :name => 'DVD')
@@ -247,16 +237,16 @@ if defined?(I18n)
       
       I18n.locale = 'en'
       actual = SelectableAttr::Enum.i18n_export
-      actual.keys.should == [:selectable_attrs]
-      actual[:selectable_attrs].keys.include?(:enum1).should == true
-      actual[:selectable_attrs][:enum1].should ==
-        {:entry1=>"entry one",
-         :entry2=>"entry two",
-         :entry3=>"entry three"}
-      actual[:selectable_attrs].keys.include?(:ProductWithI18nDB1).should == true
-      actual[:selectable_attrs][:ProductWithI18nDB1].should ==
-        {:product_type_cd=>
-          {:book=>"Book", :dvd=>"DVD", :cd=>"CD", :other=>"Others", :entry_04=>"Toy"}}
+      actual.keys.should == ['selectable_attrs']
+      actual['selectable_attrs'].keys.include?('enum1').should == true
+      actual['selectable_attrs']['enum1'].should ==
+        {'entry1'=>"entry one",
+         'entry2'=>"entry two",
+         'entry3'=>"entry three"}
+      actual['selectable_attrs'].keys.include?('ProductWithI18nDB1').should == true
+      actual['selectable_attrs']['ProductWithI18nDB1'].should ==
+        {'product_type_cd'=>
+          {'book'=>"Book", 'dvd'=>"DVD", 'cd'=>"CD", 'other'=>"Others", 'entry_04'=>"Toy"}}
     end
   end
 else
