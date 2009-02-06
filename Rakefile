@@ -47,7 +47,7 @@ begin
     s.email    = "akima@gmail.com"
     s.homepage = "http://github.com/akm/selectable_attr_rails/"
     s.authors  = ["Takeshi Akima"]
-    s.add_dependency("selectable_attr", ">= 0.3.1")
+    s.add_dependency("akm-selectable_attr", ">= 0.3.1")
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
