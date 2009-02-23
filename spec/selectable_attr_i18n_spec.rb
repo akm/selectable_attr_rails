@@ -148,6 +148,13 @@ if defined?(I18n)
       ProductWithI18nDB1.product_type_name_by_key(:dvd).should   == 'DVD'
       ProductWithI18nDB1.product_type_name_by_key(:cd).should    == 'CD'
       ProductWithI18nDB1.product_type_name_by_key(:other).should == 'その他'
+      
+      ProductWithI18nDB1.product_type_hash_array.should == [
+        {:id => '01', :key => :book, :name => '書籍', :discount => 0.8},
+        {:id => '02', :key => :dvd, :name => 'DVD', :discount => 0.2},
+        {:id => '03', :key => :cd, :name => 'CD', :discount => 0.5},
+        {:id => '09', :key => :other, :name => 'その他', :discount => 1},
+      ]
 
       # DBからエントリの名称を動的に変更できます
       item_book = I18nItemMaster.create(:locale => 'ja', :category_name => 'product_type_cd', :item_no => 1, :item_cd => '01', :name => '本')
@@ -157,6 +164,13 @@ if defined?(I18n)
       ProductWithI18nDB1.product_type_name_by_key(:cd).should == 'CD'
       ProductWithI18nDB1.product_type_name_by_key(:other).should == 'その他'
       ProductWithI18nDB1.product_type_options.should == [['本', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
+
+      ProductWithI18nDB1.product_type_hash_array.should == [
+        {:id => '01', :key => :book, :name => '本', :discount => 0.8},
+        {:id => '02', :key => :dvd, :name => 'DVD', :discount => 0.2},
+        {:id => '03', :key => :cd, :name => 'CD', :discount => 0.5},
+        {:id => '09', :key => :other, :name => 'その他', :discount => 1},
+      ]
 
       # DBからエントリの並び順を動的に変更できます
       item_book.item_no = 4;
@@ -171,6 +185,15 @@ if defined?(I18n)
       ProductWithI18nDB1.product_type_options.should == [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04']]
       ProductWithI18nDB1.product_type_key_by_id('04').should == :entry_04
 
+      ProductWithI18nDB1.product_type_hash_array.should == [
+        {:id => '09', :key => :other, :name => 'その他', :discount => 1},
+        {:id => '02', :key => :dvd, :name => 'DVD', :discount => 0.2},
+        {:id => '03', :key => :cd, :name => 'CD', :discount => 0.5},
+        {:id => '01', :key => :book, :name => '本', :discount => 0.8},
+        {:id => '04', :key => :entry_04, :name => 'おもちゃ'}
+      ]
+
+
       # 英語名を登録
       item_book = I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 4, :item_cd => '01', :name => 'Book')
       item_other = I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 1, :item_cd => '09', :name => 'Others')
@@ -181,11 +204,27 @@ if defined?(I18n)
       # 英語名が登録されていてもI18n.localeが変わらなければ、日本語のまま
       ProductWithI18nDB1.product_type_options.should == [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04']]
       ProductWithI18nDB1.product_type_key_by_id('04').should == :entry_04
+
+      ProductWithI18nDB1.product_type_hash_array.should == [
+        {:id => '09', :key => :other, :name => 'その他', :discount => 1},
+        {:id => '02', :key => :dvd, :name => 'DVD', :discount => 0.2},
+        {:id => '03', :key => :cd, :name => 'CD', :discount => 0.5},
+        {:id => '01', :key => :book, :name => '本', :discount => 0.8},
+        {:id => '04', :key => :entry_04, :name => 'おもちゃ'}
+      ]
       
       # I18n.localeを変更すると取得できるエントリの名称も変わります
       I18n.locale = 'en'
       ProductWithI18nDB1.product_type_options.should == [['Others', '09'], ['DVD', '02'], ['CD', '03'], ['Book', '01'], ['Toy', '04']]
       ProductWithI18nDB1.product_type_key_by_id('04').should == :entry_04
+
+      ProductWithI18nDB1.product_type_hash_array.should == [
+        {:id => '09', :key => :other, :name => 'Others', :discount => 1},
+        {:id => '02', :key => :dvd, :name => 'DVD', :discount => 0.2},
+        {:id => '03', :key => :cd, :name => 'CD', :discount => 0.5},
+        {:id => '01', :key => :book, :name => 'Book', :discount => 0.8},
+        {:id => '04', :key => :entry_04, :name => 'Toy'}
+      ]
 
       I18n.locale = 'ja'
       ProductWithI18nDB1.product_type_options.should == [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04']]
