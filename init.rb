@@ -9,7 +9,7 @@ module SelectableAttr
 end
 
 class ActiveRecord::Base
-  include SelectableAttr::Base
+  include ::SelectableAttr::Base
 end
 
 class ActionView::Base
@@ -23,3 +23,4 @@ class ActionView::Helpers::FormBuilder
   include ::SelectableAttrRails::Helpers::CheckBoxGroupHelper::FormBuilder
   include ::SelectableAttrRails::Helpers::RadioButtonGroupHelper::FormBuilder
 end
+
