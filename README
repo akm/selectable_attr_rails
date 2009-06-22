@@ -1,10 +1,14 @@
 = SelectableAttrRails
 
 == Introduction
-selectable_attr は、コードが割り振られるような特定の属性について*コード*、*プログラム上での名前*、
-*表示するための名前*などをまとめて管理するものです。
 selectable_attr_railsは、selectable_attrをRailsで使うときに便利なヘルパーメソッドを提供し、
 エントリをDBから取得したり、I18n対応するものです。
+http://github.com/akm/selectable_attr_rails/tree/master
+
+selectable_attr は、コードが割り振られるような特定の属性について*コード*、*プログラム上での名前*、
+*表示するための名前*などをまとめて管理するものです。
+http://github.com/akm/selectable_attr/tree/master
+
 
 == Install
 === 1. Railsプロジェクトで使う場合
