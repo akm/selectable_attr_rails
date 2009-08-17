@@ -1,4 +1,5 @@
 /*.gem
 /coverage
 /pkg
+/rdoc
 /selectable_attr_test.sqlite3.db
