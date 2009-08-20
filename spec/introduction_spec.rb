@@ -93,6 +93,7 @@ describe SelectableAttr do
       entry '02', :dvd, 'DVD', :discount => 0.2
       entry '03', :cd, 'CD', :discount => 0.5
       entry '09', :other, 'その他', :discount => 1
+      validates_format :allow_nil => true, :message => 'は次のいずれかでなければなりません。 #{entries}'
     end
 
     def discount_price
@@ -174,6 +175,23 @@ describe SelectableAttr do
     # select_tagなどのoption_tagsを作るための配列なんか一発っす
     Product1.product_type_options.should == 
       [['書籍', '01'], ['DVD', '02'], ['CD', '03'], ['その他', '09']]
+  end
+
+  it "validate with entries" do
+    p1 = Product1.new
+    p1.product_type_cd.should == nil
+    p1.valid?.should == true
+    p1.errors.empty?.should == true
+
+    p1.product_type_key = :book 
+    p1.product_type_cd.should == '01'
+    p1.valid?.should == true
+    p1.errors.empty?.should == true
+
+    p1.product_type_cd = 'XX' 
+    p1.product_type_cd.should == 'XX'
+    p1.valid?.should == false
+    p1.errors.on(:product_type_cd).should == "は次のいずれかでなければなりません。 書籍, DVD, CD, その他"
   end
 
   # selectable_attrのエントリ名をDB上に保持するためのモデル
