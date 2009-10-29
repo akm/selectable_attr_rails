@@ -9,10 +9,38 @@ module SelectableAttrRails
     end
     
     module Entry
-      attr_accessor :name_from_db
-      def name
-        @name_from_db || super
+
+      if defined?(I18n)
+        def name_from_db
+          @names_from_db ||= {}
+          @names_from_db[I18n.locale.to_s]
+        end
+
+        def name_from_db=(value)
+          @names_from_db ||= {}
+          @names_from_db[I18n.locale.to_s] = value
+        end
+        
+        def name_with_from_db
+          name_from_db || name_without_from_db
+        end
+
+      else
+        
+        attr_accessor :name_from_db
+        def name_with_from_db
+          @name_from_db || name_without_from_db
+        end
+      
       end
+
+      def self.extended(obj)
+        obj.instance_eval do
+          alias :name_without_from_db :name
+          alias :name :name_with_from_db
+        end
+      end
+
     end
     
     module InstanceMethods
@@ -30,7 +58,7 @@ module SelectableAttrRails
         unless @original_entries
           @original_entries = @entries.dup
           @original_entries.each do |entry|
-            entry.extend(SelectableAttrRails::DbLoadable::Entry)
+            entry.extend(SelectableAttr::DbLoadable::Entry) unless respond_to?(:name_from_db)
           end
         end
         records = nil
@@ -38,7 +66,8 @@ module SelectableAttrRails
           records = @sql_to_update.call
         else
           @connection ||= ActiveRecord::Base.connection
-          records = @connection.select_rows(@sql_to_update)
+          sql = @sql_to_update.gsub(/\:locale/, I18n.locale.to_s.inspect)
+          records = @connection.select_rows(sql)
         end
         
         new_entries = []
@@ -48,6 +77,8 @@ module SelectableAttrRails
             new_entries << entry
           else
             entry = SelectableAttr::Enum::Entry.new(self, r.first, "entry_#{r.first}".to_sym, r.last)
+            entry.extend(SelectableAttr::DbLoadable::Entry)
+            entry.name_from_db = r.last
             new_entries << entry
           end
         end

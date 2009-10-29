@@ -26,7 +26,7 @@ module SelectableAttrRails::Helpers
       
       def single_enum_select(object_name, method, options = {}, html_options = {}, &block)
         options = update_enum_select_options(options, object_name, method)
-        object = options.delete(:object)
+        object = options[:object] # options.delete(:object)
         base_name = options.delete(:base_name)
         entry_hash_array = options.delete(:entry_hash_array) || object.class.send("#{base_name}_hash_array")
         container = entry_hash_array.map{|hash| [hash[:name].to_s, hash[:id]]}

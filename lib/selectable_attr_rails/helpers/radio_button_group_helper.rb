@@ -2,6 +2,10 @@ module SelectableAttrRails::Helpers
   module RadioButtonGroupHelper
     class Builder < SelectableAttrRails::Helpers::AbstractSelectionBuilder
       
+      attr_reader :entry_hash_array 
+      attr_reader :entry_hash 
+      attr_accessor :radio_button_id 
+
       def initialize(object, object_name, method, options, template)
         super(object, object_name, method, options, template)
         @entry_hash_array ||= enum_hash_array_from_class
