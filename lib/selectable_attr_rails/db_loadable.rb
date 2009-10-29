@@ -58,7 +58,7 @@ module SelectableAttrRails
         unless @original_entries
           @original_entries = @entries.dup
           @original_entries.each do |entry|
-            entry.extend(SelectableAttr::DbLoadable::Entry) unless respond_to?(:name_from_db)
+            entry.extend(SelectableAttrRails::DbLoadable::Entry) unless respond_to?(:name_from_db)
           end
         end
         records = nil
@@ -77,7 +77,7 @@ module SelectableAttrRails
             new_entries << entry
           else
             entry = SelectableAttr::Enum::Entry.new(self, r.first, "entry_#{r.first}".to_sym, r.last)
-            entry.extend(SelectableAttr::DbLoadable::Entry)
+            entry.extend(SelectableAttrRails::DbLoadable::Entry)
             entry.name_from_db = r.last
             new_entries << entry
           end
