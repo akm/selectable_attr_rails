@@ -65,9 +65,8 @@ module SelectableAttrRails
         if @sql_to_update.respond_to?(:call)
           records = @sql_to_update.call
         else
-          @connection ||= ActiveRecord::Base.connection
           sql = @sql_to_update.gsub(/\:locale/, I18n.locale.to_s.inspect)
-          records = @connection.select_rows(sql)
+          records = ActiveRecord::Base.connection.select_rows(sql)
         end
         
         new_entries = []
