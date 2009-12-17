@@ -50,7 +50,7 @@ begin
     s.add_dependency("activesupport", ">= 2.0.2")
     s.add_dependency("activerecord", ">= 2.0.2")
     s.add_dependency("actionpack", ">= 2.0.2")
-    s.add_dependency("akm-selectable_attr", ">= 0.3.5")
+    s.add_dependency("selectable_attr", ">= 0.3.5")
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
