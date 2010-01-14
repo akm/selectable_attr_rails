@@ -253,6 +253,9 @@ if defined?(I18n)
     end
 
     it 'test_i18n_export' do
+      io = StringIO.new
+      SelectableAttrRails.logger = Logger.new(io)
+
       I18nItemMaster.delete_all("category_name = 'product_type_cd'")
 
       I18n.locale = 'ja'
@@ -282,10 +285,25 @@ if defined?(I18n)
         {'entry1'=>"entry one",
          'entry2'=>"entry two",
          'entry3'=>"entry three"}
-      actual['selectable_attrs'].keys.include?('ProductWithI18nDB1').should == true
+      actual['selectable_attrs'].keys.should include('ProductWithI18nDB1')
       actual['selectable_attrs']['ProductWithI18nDB1'].should ==
         {'product_type_cd'=>
           {'book'=>"Book", 'dvd'=>"DVD", 'cd'=>"CD", 'other'=>"Others", 'entry_04'=>"Toy"}}
+    end
+
+    Enum2 = SelectableAttr::Enum.new do
+      entry 1, :entry1, "縁鳥1"
+      entry 2, :entry2, "縁鳥2"
+      entry 3, :entry3, "縁鳥3"
+    end
+
+    it "i18n_scope missing" do
+      io = StringIO.new
+      SelectableAttrRails.logger = Logger.new(io)
+      actual = SelectableAttr::Enum.i18n_export([Enum2])
+      actual.inspect.should_not =~ /縁鳥/
+      io.rewind
+      io.readline.should =~ /^no\ i18n_scope\ of\ /
     end
   end
 else

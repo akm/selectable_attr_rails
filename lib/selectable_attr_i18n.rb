@@ -1,11 +1,14 @@
 if defined?(I18n)
+  require 'selectable_attr'
+
   module SelectableAttr
     class Enum
-      def self.i18n_export
+      def self.i18n_export(enums = nil)
+        enums ||= instances
         result = {}
-        instances.each do |instance|
+        enums.each do |instance|
           unless instance.i18n_scope
-            # puts "no i18n_scope of #{instance.inspect}"
+            SelectableAttrRails.logger.debug("no i18n_scope of #{instance.inspect}")
             next 
           end
           paths = instance.i18n_scope.dup
