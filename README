@@ -11,13 +11,19 @@ http://github.com/akm/selectable_attr/tree/master
 
 
 == Install
-=== 1. Railsプロジェクトで使う場合
-==== a. plugin install
+=== a. plugin install
  ruby script/plugin install git://github.com/akm/selectable_attr.git
  ruby script/plugin install git://github.com/akm/selectable_attr_rails.git
 
-==== b. gem install
- [sudo] gem install akimatter-selectable_attr akimatter-selectable_attr_rails -s http://gems.github .com
+=== b. gem install
+ [sudo] gem install selectable_attr_rails
+
+config/initializers/selectable_attr.rb
+ require 'selectable_attr'
+ require 'selectable_attr_i18n'
+ require 'selectable_attr_rails'
+ SelectableAttrRails.setup
+
 
 == チュートリアル
 
