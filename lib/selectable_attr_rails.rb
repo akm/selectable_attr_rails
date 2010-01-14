@@ -7,9 +7,14 @@ module SelectableAttrRails
   autoload :Validatable, 'selectable_attr_rails/validatable'
 
   class << self
+    def logger
+      @logger ||= Logger.new(STDERR)
+    end
+    def logger=(value)
+      @logger = value
+    end
     
     def add_features_to_active_record
-      puts "SelectableAttrRails.add_features_to_active_record"
       ActiveRecord::Base.module_eval do 
         include ::SelectableAttr::Base
         include ::SelectableAttrRails::Validatable::Base
@@ -18,6 +23,7 @@ module SelectableAttrRails
         include ::SelectableAttrRails::DbLoadable
         include ::SelectableAttrRails::Validatable::Enum
       end
+      logger.debug("#{self.name}.add_features_to_active_record")
     end
     
     def add_features_to_action_view
@@ -31,12 +37,19 @@ module SelectableAttrRails
         include ::SelectableAttrRails::Helpers::CheckBoxGroupHelper::FormBuilder
         include ::SelectableAttrRails::Helpers::RadioButtonGroupHelper::FormBuilder
       end
+      logger.debug("#{self.name}.add_features_to_action_view")
     end
 
     def add_features_to_rails
-      puts "SelectableAttrRails.add_features_to_rails"
       add_features_to_active_record
       add_features_to_action_view
+    end
+
+    def setup
+      logger = defined?(Rails) ? Rails.logger : ActiveRecord::Base.logger
+      self.logger = logger
+      SelectableAttr.logger = logger if SelectableAttr.respond_to?(:logger=) # since 0.3.11
+      add_features_to_rails
     end
   end
 
