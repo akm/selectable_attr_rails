@@ -62,7 +62,11 @@ if defined?(I18n)
     it 'test_attr1_i18n' do
       I18n.default_locale = 'ja'
       I18n.locale = nil
-      I18n.locale.should == 'ja'
+      if ActiveRecord::VERSION::STRING <= "2.2.3"
+        I18n.locale.should == 'ja'
+      else
+        I18n.locale.should == :ja
+      end
       SelectableAttrMock1.attr1_name_by_key(:entry1).should == "エントリ壱"
       SelectableAttrMock1.attr1_name_by_key(:entry2).should == "エントリ弐"
       SelectableAttrMock1.attr1_name_by_key(:entry3).should == "エントリ参"
@@ -93,7 +97,11 @@ if defined?(I18n)
     it 'test_enum1_i18n' do
       I18n.default_locale = 'ja'
       I18n.locale = nil
-      I18n.locale.should == 'ja'
+      if ActiveRecord::VERSION::STRING <= "2.2.3"
+        I18n.locale.should == 'ja'
+      else
+        I18n.locale.should == :ja
+      end
       SelectableAttrMock2.enum1_name_by_key(:entry1).should == "エントリ壱"
       SelectableAttrMock2.enum1_name_by_key(:entry2).should == "エントリ弐"
       SelectableAttrMock2.enum1_name_by_key(:entry3).should == "エントリ参"
