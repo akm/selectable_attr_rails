@@ -7,7 +7,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-  
+
   create_table "item_masters", :force => true do |t|
     t.string   "category_name", :limit => 20
     t.integer  "item_no"
@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-  
+
   create_table "i18n_item_masters", :force => true do |t|
     t.string   "locale", :limit => 5
     t.string   "category_name", :limit => 20
@@ -26,5 +26,5 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-  
+
 end

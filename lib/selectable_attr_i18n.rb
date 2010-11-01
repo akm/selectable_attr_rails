@@ -9,7 +9,7 @@ if defined?(I18n)
         enums.each do |instance|
           unless instance.i18n_scope
             SelectableAttrRails.logger.debug("no i18n_scope of #{instance.inspect}")
-            next 
+            next
           end
           paths = instance.i18n_scope.dup
           current = result
@@ -27,7 +27,7 @@ if defined?(I18n)
         @i18n_scope = path unless path.empty?
         @i18n_scope
       end
-    
+
       class Entry
         def name
           I18n.locale.nil? ? @name :

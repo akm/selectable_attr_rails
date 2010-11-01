@@ -27,9 +27,9 @@ if defined?(I18n)
 
     it 'test_enum1_i18n' do
       I18n.locale = nil
-      I18n.locale.should == :en 
+      I18n.locale.should == :en
       Enum1.name_by_key(:entry1).should == "entry one"
-      Enum1.name_by_key(:entry2).should == "entry two" 
+      Enum1.name_by_key(:entry2).should == "entry two"
       Enum1.name_by_key(:entry3).should == "entry three"
       Enum1.names.should == ["entry one", "entry two", "entry three"]
 
@@ -62,12 +62,12 @@ if defined?(I18n)
     it 'test_attr1_i18n' do
       I18n.default_locale = 'ja'
       I18n.locale = nil
-      I18n.locale.should == 'ja' 
-      SelectableAttrMock1.attr1_name_by_key(:entry1).should == "エントリ壱" 
-      SelectableAttrMock1.attr1_name_by_key(:entry2).should == "エントリ弐" 
-      SelectableAttrMock1.attr1_name_by_key(:entry3).should == "エントリ参" 
+      I18n.locale.should == 'ja'
+      SelectableAttrMock1.attr1_name_by_key(:entry1).should == "エントリ壱"
+      SelectableAttrMock1.attr1_name_by_key(:entry2).should == "エントリ弐"
+      SelectableAttrMock1.attr1_name_by_key(:entry3).should == "エントリ参"
       SelectableAttrMock1.attr1_options.should == [["エントリ壱",1], ["エントリ弐",2], ["エントリ参",3]]
-      
+
       I18n.locale = 'ja'
       SelectableAttrMock1.attr1_name_by_key(:entry1).should == "エントリ壱"
       SelectableAttrMock1.attr1_name_by_key(:entry2).should == "エントリ弐"
@@ -75,8 +75,8 @@ if defined?(I18n)
       SelectableAttrMock1.attr1_options.should == [["エントリ壱",1], ["エントリ弐",2], ["エントリ参",3]]
 
       I18n.locale = 'en'
-      SelectableAttrMock1.attr1_name_by_key(:entry1).should == "entry one" 
-      SelectableAttrMock1.attr1_name_by_key(:entry2).should == "entry two" 
+      SelectableAttrMock1.attr1_name_by_key(:entry1).should == "entry one"
+      SelectableAttrMock1.attr1_name_by_key(:entry2).should == "entry two"
       SelectableAttrMock1.attr1_name_by_key(:entry3).should == "entry three"
       SelectableAttrMock1.attr1_options.should == [["entry one",1], ["entry two",2], ["entry three",3]]
     end
@@ -106,8 +106,8 @@ if defined?(I18n)
       SelectableAttrMock2.enum1_options.should == [["エントリ壱",1], ["エントリ弐",2], ["エントリ参",3]]
 
       I18n.locale = 'en'
-      SelectableAttrMock2.enum1_name_by_key(:entry1).should == "entry one"  
-      SelectableAttrMock2.enum1_name_by_key(:entry2).should == "entry two"  
+      SelectableAttrMock2.enum1_name_by_key(:entry1).should == "entry one"
+      SelectableAttrMock2.enum1_name_by_key(:entry2).should == "entry two"
       SelectableAttrMock2.enum1_name_by_key(:entry3).should == "entry three"
       SelectableAttrMock2.enum1_options.should == [["entry one",1], ["entry two",2], ["entry three",3]]
     end
@@ -125,7 +125,7 @@ if defined?(I18n)
         # update_byメソッドには、エントリのidと名称を返すSELECT文を指定する代わりに、
         # エントリのidと名称の配列の配列を返すブロックを指定することも可能です。
         update_by(:when => :everytime) do
-          records = I18nItemMaster.find(:all, 
+          records = I18nItemMaster.find(:all,
             :conditions => [
               "category_name = 'product_type_cd' and locale = ? ", I18n.locale.to_s],
             :order => "item_no")
@@ -148,7 +148,7 @@ if defined?(I18n)
       ProductWithI18nDB1.product_type_name_by_key(:dvd).should   == 'DVD'
       ProductWithI18nDB1.product_type_name_by_key(:cd).should    == 'CD'
       ProductWithI18nDB1.product_type_name_by_key(:other).should == 'その他'
-      
+
       ProductWithI18nDB1.product_type_hash_array.should == [
         {:id => '01', :key => :book, :name => '書籍', :discount => 0.8},
         {:id => '02', :key => :dvd, :name => 'DVD', :discount => 0.2},
@@ -158,7 +158,7 @@ if defined?(I18n)
 
       # DBからエントリの名称を動的に変更できます
       item_book = I18nItemMaster.create(:locale => 'ja', :category_name => 'product_type_cd', :item_no => 1, :item_cd => '01', :name => '本')
-      ProductWithI18nDB1.product_type_entries.length.should == 4 
+      ProductWithI18nDB1.product_type_entries.length.should == 4
       ProductWithI18nDB1.product_type_name_by_key(:book).should == '本'
       ProductWithI18nDB1.product_type_name_by_key(:dvd).should == 'DVD'
       ProductWithI18nDB1.product_type_name_by_key(:cd).should == 'CD'
@@ -200,7 +200,7 @@ if defined?(I18n)
       item_dvd = I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 2, :item_cd => '02', :name => 'DVD')
       item_cd = I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 3, :item_cd => '03', :name => 'CD')
       item_toys = I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 5, :item_cd => '04', :name => 'Toy')
-      
+
       # 英語名が登録されていてもI18n.localeが変わらなければ、日本語のまま
       ProductWithI18nDB1.product_type_options.should == [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04']]
       ProductWithI18nDB1.product_type_key_by_id('04').should == :entry_04
@@ -212,7 +212,7 @@ if defined?(I18n)
         {:id => '01', :key => :book, :name => '本', :discount => 0.8},
         {:id => '04', :key => :entry_04, :name => 'おもちゃ'}
       ]
-      
+
       # I18n.localeを変更すると取得できるエントリの名称も変わります
       I18n.locale = 'en'
       ProductWithI18nDB1.product_type_options.should == [['Others', '09'], ['DVD', '02'], ['CD', '03'], ['Book', '01'], ['Toy', '04']]
@@ -229,7 +229,7 @@ if defined?(I18n)
       I18n.locale = 'ja'
       ProductWithI18nDB1.product_type_options.should == [['その他', '09'], ['DVD', '02'], ['CD', '03'], ['本', '01'], ['おもちゃ', '04']]
       ProductWithI18nDB1.product_type_key_by_id('04').should == :entry_04
-      
+
       I18n.locale = 'en'
       ProductWithI18nDB1.product_type_options.should == [['Others', '09'], ['DVD', '02'], ['CD', '03'], ['Book', '01'], ['Toy', '04']]
       ProductWithI18nDB1.product_type_key_by_id('04').should == :entry_04
@@ -276,7 +276,7 @@ if defined?(I18n)
       I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 3, :item_cd => '03', :name => 'CD')
       I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 4, :item_cd => '01', :name => 'Book')
       I18nItemMaster.create(:locale => 'en', :category_name => 'product_type_cd', :item_no => 5, :item_cd => '04', :name => 'Toy')
-      
+
       I18n.locale = 'en'
       actual = SelectableAttr::Enum.i18n_export
       actual.keys.should == ['selectable_attrs']

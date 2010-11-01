@@ -1,10 +1,10 @@
 module SelectableAttrRails::Helpers
   module RadioButtonGroupHelper
     class Builder < SelectableAttrRails::Helpers::AbstractSelectionBuilder
-      
-      attr_reader :entry_hash_array 
-      attr_reader :entry_hash 
-      attr_accessor :radio_button_id 
+
+      attr_reader :entry_hash_array
+      attr_reader :entry_hash
+      attr_accessor :radio_button_id
 
       def initialize(object, object_name, method, options, template)
         super(object, object_name, method, options, template)
@@ -19,12 +19,12 @@ module SelectableAttrRails::Helpers
           yield(self)
         end
       end
-      
+
       def radio_button(options = nil)
-        @template.radio_button(@object_name, @method, @entry_hash[:id], 
+        @template.radio_button(@object_name, @method, @entry_hash[:id],
           update_options({:id => @radio_button_id}, options))
       end
-      
+
       def label(text = nil, options = nil)
         @template.content_tag("label", text || @entry_hash[:name],
           update_options({:for => @radio_button_id}, options))
@@ -48,10 +48,10 @@ module SelectableAttrRails::Helpers
         end
       end
     end
-    
+
     module FormBuilder
       def radio_button_group(method, options = nil, &block)
-        @template.radio_button_group(@object_name, method, 
+        @template.radio_button_group(@object_name, method,
           (options || {}).merge(:object => @object), &block)
       end
     end

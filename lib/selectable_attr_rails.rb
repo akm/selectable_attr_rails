@@ -13,19 +13,19 @@ module SelectableAttrRails
     def logger=(value)
       @logger = value
     end
-    
+
     def add_features_to_active_record
-      ActiveRecord::Base.module_eval do 
+      ActiveRecord::Base.module_eval do
         include ::SelectableAttr::Base
         include ::SelectableAttrRails::Validatable::Base
       end
-      SelectableAttr::Enum.module_eval do 
+      SelectableAttr::Enum.module_eval do
         include ::SelectableAttrRails::DbLoadable
         include ::SelectableAttrRails::Validatable::Enum
       end
       logger.debug("#{self.name}.add_features_to_active_record")
     end
-    
+
     def add_features_to_action_view
       ActionView::Base.module_eval do
         include ::SelectableAttrRails::Helpers::SelectHelper::Base

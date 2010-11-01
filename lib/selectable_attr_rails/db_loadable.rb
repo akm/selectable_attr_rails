@@ -7,7 +7,7 @@ module SelectableAttrRails
       @update_timing = options[:when]
       self.extend(InstanceMethods) unless respond_to?(:update_entries)
     end
-    
+
     module Entry
 
       if defined?(I18n)
@@ -20,18 +20,18 @@ module SelectableAttrRails
           @names_from_db ||= {}
           @names_from_db[I18n.locale.to_s] = value
         end
-        
+
         def name_with_from_db
           name_from_db || name_without_from_db
         end
 
       else
-        
+
         attr_accessor :name_from_db
         def name_with_from_db
           @name_from_db || name_without_from_db
         end
-      
+
       end
 
       def self.extended(obj)
@@ -42,18 +42,18 @@ module SelectableAttrRails
       end
 
     end
-    
+
     module InstanceMethods
       def entries
         update_entries if must_be_updated?
         @entries
       end
-      
+
       def must_be_updated?
         return false if @update_timing == :never
         return true if @update_timing == :everytime
       end
-      
+
       def update_entries
         unless @original_entries
           @original_entries = @entries.dup
@@ -68,7 +68,7 @@ module SelectableAttrRails
           sql = @sql_to_update.gsub(/\:locale/, I18n.locale.to_s.inspect)
           records = ActiveRecord::Base.connection.select_rows(sql)
         end
-        
+
         new_entries = []
         records.each do |r|
           if entry = @original_entries.detect{|entry| entry.id == r.first}
@@ -90,6 +90,6 @@ module SelectableAttrRails
         @entries = new_entries
       end
     end
-    
+
   end
 end

@@ -6,7 +6,7 @@ module SelectableAttrRails::Helpers
           alias_method_chain :select, :attr_enumeable
         end
       end
-      
+
       # def select_with_attr_enumeable(object, method, choices, options = {}, html_options = {})
       def select_with_attr_enumeable(object_name, method, *args, &block)
         if args.length > 3
@@ -23,7 +23,7 @@ module SelectableAttrRails::Helpers
         return single_enum_select(object_name, method, options, html_options, &block) if object.class.respond_to?("#{base_name}_hash_array")
         raise ArgumentError, "invaliad argument"
       end
-      
+
       def single_enum_select(object_name, method, options = {}, html_options = {}, &block)
         options = update_enum_select_options(options, object_name, method)
         object = options[:object] # options.delete(:object)
@@ -32,7 +32,7 @@ module SelectableAttrRails::Helpers
         container = entry_hash_array.map{|hash| [hash[:name].to_s, hash[:id]]}
         select_without_attr_enumeable(object_name, method, container, options, html_options || {}, &block)
       end
-      
+
       def multi_enum_select(object_name, method, options = {}, html_options = {}, &block)
         html_options = {:size => 5, :multiple => 'multiple'}.update(html_options || {})
         options = update_enum_select_options(options, object_name, method)
@@ -43,7 +43,7 @@ module SelectableAttrRails::Helpers
         attr = "#{base_name}_ids"
         select_without_attr_enumeable(object_name, attr, container, options, html_options, &block)
       end
-      
+
       def update_enum_select_options(options, object_name, method)
         options ||= {}
         object = (options[:object] ||= instance_variable_get("@#{object_name}"))
@@ -51,7 +51,7 @@ module SelectableAttrRails::Helpers
         options
       end
     end
-    
+
     module FormBuilder
       def self.included(base)
         base.module_eval do
