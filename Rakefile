@@ -1,42 +1,5 @@
 require 'rubygems'
-gem 'rspec', '>= 1.1.4'
 require 'rake'
-require 'rake/rdoctask'
-require 'spec/rake/spectask'
-require 'spec/rake/verify_rcov'
- 
-desc 'Default: run unit tests.'
-task :default => :spec
- 
-task :pre_commit => [:spec, 'coverage:verify']
- 
-desc 'Run all specs under spec/**/*_spec.rb'
-Spec::Rake::SpecTask.new(:spec => 'coverage:clean') do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
-  t.spec_opts = ["-c", "--diff"]
-  t.rcov = true
-  t.rcov_opts = ["--include-file", "lib\/*\.rb", "--exclude", "spec\/"]
-end
- 
-desc 'Generate documentation for the selectable_attr_rails plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'SelectableAttrRails'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
- 
-namespace :coverage do
-  desc "Delete aggregate coverage data."
-  task(:clean) { rm_f "coverage" }
- 
-  desc "verify coverage threshold via RCov"
-  RCov::VerifyTask.new(:verify => :spec) do |t|
-    t.threshold = 100.0 # Make sure you have rcov 0.7 or higher!
-    t.index_html = 'coverage/index.html'
-  end
-end
 
 begin
   require 'jeweler'
@@ -51,7 +14,62 @@ begin
     s.add_dependency("activerecord", ">= 2.0.2")
     s.add_dependency("actionpack", ">= 2.0.2")
     s.add_dependency("selectable_attr", ">= 0.3.11")
+    s.add_development_dependency "rspec", ">= 1.3.1"
+    s.add_development_dependency "sqlite3-ruby"
+    s.add_development_dependency "rcov"
   end
 rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+end
+
+
+require 'spec/rake/spectask'
+Spec::Rake::SpecTask.new(:spec) do |spec|
+  spec.libs << 'lib' << 'spec'
+  spec.spec_files = FileList['spec/**/*_spec.rb']
+end
+
+Spec::Rake::SpecTask.new(:rcov) do |spec|
+  spec.libs << 'lib' << 'spec'
+  spec.pattern = 'spec/**/*_spec.rb'
+  spec.rcov = true
+end
+
+task :spec => :check_dependencies
+
+begin
+  require 'reek/adapters/rake_task'
+  Reek::RakeTask.new do |t|
+    t.fail_on_error = true
+    t.verbose = false
+    t.source_files = 'lib/**/*.rb'
+  end
+rescue LoadError
+  task :reek do
+    abort "Reek is not available. In order to run reek, you must: sudo gem install reek"
+  end
+end
+
+begin
+  require 'roodi'
+  require 'roodi_task'
+  RoodiTask.new do |t|
+    t.verbose = false
+  end
+rescue LoadError
+  task :roodi do
+    abort "Roodi is not available. In order to run roodi, you must: sudo gem install roodi"
+  end
+end
+
+task :default => :spec
+
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "range_dsl #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
 end
