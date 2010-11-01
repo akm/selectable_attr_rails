@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 if defined?(I18n)
-  require File.join(File.dirname(__FILE__), 'spec_helper')
+  require File.expand_path('spec_helper', File.dirname(__FILE__))
 
   describe SelectableAttr::Enum do
 
