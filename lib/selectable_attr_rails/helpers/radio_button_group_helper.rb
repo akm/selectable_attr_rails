@@ -44,7 +44,7 @@ module SelectableAttrRails::Helpers
             result << builder.radio_button
             result << builder.label
           end
-          return result
+          return result.html_safe
         end
       end
     end

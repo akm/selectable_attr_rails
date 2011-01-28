@@ -49,7 +49,7 @@ module SelectableAttrRails::Helpers
             result << builder.label
             result << '&nbsp;'
           end
-          return result
+          return result.html_safe
         end
       end
     end
