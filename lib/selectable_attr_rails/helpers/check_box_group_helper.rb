@@ -37,7 +37,7 @@ module SelectableAttrRails::Helpers
     module Base
       def check_box_group(object_name, method, options = nil, &block)
         object = (options || {})[:object] || instance_variable_get("@#{object_name}")
-        builder = Builder.new(object, object_name, method, options, @template)
+        builder = Builder.new(object, object_name, method, options, self)
         if block_given?
           yield(builder)
           return nil
@@ -49,7 +49,7 @@ module SelectableAttrRails::Helpers
             result << builder.label
             result << '&nbsp;'
           end
-          return result
+          return result.respond_to?(:html_safe) ? result.html_safe : result
         end
       end
     end
