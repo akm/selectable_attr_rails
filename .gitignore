@@ -1,4 +1,6 @@
 /*.gem
+/.rvmrc
+/Gemfile.lock
 /coverage
 /pkg
 /rdoc
