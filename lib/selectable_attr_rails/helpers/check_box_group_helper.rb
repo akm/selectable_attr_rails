@@ -25,7 +25,7 @@ module SelectableAttrRails::Helpers
             :name => "#{@object_name}[#{@param_name}][]"
           }, @check_box_options, options)
         options[:checked] = 'checked' if @entry_hash[:select]
-        @template.content_tag("input", nil, options)
+        @template.tag("input", options)
       end
 
       def label(text = nil, options = nil)
