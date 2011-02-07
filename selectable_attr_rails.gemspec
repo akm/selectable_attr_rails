@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{selectable_attr_rails}
-  s.version = "0.3.13"
+  s.version = "0.3.14"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Takeshi Akima"]
-  s.date = %q{2011-02-06}
+  s.date = %q{2011-02-07}
   s.description = %q{selectable_attr_rails makes possible to use selectable_attr in rails application}
   s.email = %q{akm2000@gmail.com}
   s.extra_rdoc_files = [
