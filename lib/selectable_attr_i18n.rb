@@ -22,20 +22,6 @@ if defined?(I18n)
         end
         result
       end
-
-      def i18n_scope(*path)
-        @i18n_scope = path unless path.empty?
-        @i18n_scope
-      end
-
-      class Entry
-        def name
-          I18n.locale.nil? ? @name :
-            @enum.i18n_scope.blank? ? @name :
-            I18n.translate(key, :scope => @enum.i18n_scope, :default => @name)
-        end
-      end
-
     end
   end
 end

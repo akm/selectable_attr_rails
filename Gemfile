@@ -3,10 +3,10 @@ source "http://rubygems.org"
 # Example:
 #   gem "activesupport", ">= 2.3.5"
 
-gem "activesupport", "= 2.3.14"
-gem "activerecord", "= 2.3.14"
-gem "actionpack", "= 2.3.14"
-gem "selectable_attr", ">= 0.3.11"
+gem "activesupport", ">= 2.3.14"
+gem "activerecord", ">= 2.3.14"
+gem "actionpack", ">= 2.3.14"
+gem "selectable_attr", ">= 0.3.15"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
