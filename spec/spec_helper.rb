@@ -7,6 +7,7 @@ require 'active_support'
 require 'active_record'
 require 'active_record/fixtures'
 require 'active_record/test_case'
+require 'action_controller'
 require 'action_view'
 
 require 'selectable_attr'

@@ -191,7 +191,11 @@ describe SelectableAttr do
     p1.product_type_cd = 'XX'
     p1.product_type_cd.should == 'XX'
     p1.valid?.should == false
-    p1.errors[:product_type_cd].should == ["は次のいずれかでなければなりません。 書籍, DVD, CD, その他"]
+    if ActiveRecord::VERSION::MAJOR <= 2
+      p1.errors.on(:product_type_cd).should == "は次のいずれかでなければなりません。 書籍, DVD, CD, その他"
+    else
+      p1.errors[:product_type_cd].should == ["は次のいずれかでなければなりません。 書籍, DVD, CD, その他"]
+    end
   end
 
   # selectable_attrのエントリ名をDB上に保持するためのモデル
