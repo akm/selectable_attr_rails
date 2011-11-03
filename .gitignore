@@ -1,7 +1,13 @@
+*.*~
+*~
+.*~
+*.log
 /*.gem
 /.rvmrc
+/.yardoc
 /Gemfile.lock
 /coverage
+/doc
 /pkg
 /rdoc
 /selectable_attr_test.sqlite3.db

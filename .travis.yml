@@ -1,0 +1,12 @@
+rvm:
+  - 1.8.7
+  - 1.9.2
+  - 1.9.3
+  - ruby-head
+  - jruby
+  - ree
+gemfile:
+  - gemfiles/Gemfile.rails-2.0.2
+  - gemfiles/Gemfile.rails-2.1.2
+  - gemfiles/Gemfile.rails-2.2.3
+  - gemfiles/Gemfile.rails-2.3.14
