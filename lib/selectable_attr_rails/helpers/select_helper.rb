@@ -3,7 +3,13 @@ module SelectableAttrRails::Helpers
     module Base
       def self.included(base)
         base.module_eval do
-          alias_method_chain :select, :attr_enumeable
+          if RUBY_VERSION >= '2.0.0'
+            alias_method :select_without_attr_enumeable, :select
+            alias_method :select, :select_with_attr_enumeable
+            prepend SelectableAttrRails::Helpers::SelectHelper::Base
+          else
+            alias_method_chain :select, :attr_enumeable
+          end
         end
       end
 
@@ -55,7 +61,12 @@ module SelectableAttrRails::Helpers
     module FormBuilder
       def self.included(base)
         base.module_eval do
-          alias_method_chain :select, :attr_enumeable
+          if RUBY_VERSION >= '2.0.0'
+            alias_method :select, :select_with_attr_enumeable
+            prepend SelectableAttrRails::Helpers::SelectHelper::FormBuilder
+          else
+            alias_method_chain :select, :attr_enumeable
+          end
         end
       end
 
